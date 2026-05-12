@@ -3,7 +3,7 @@ import requests
 import time
 import threading
 
-URL_BACKEND = "http://localhost:8000"
+URL_BACKEND = "http://127.0.0.1:8000"
 
 def main(page: ft.Page):
     page.title = "Monitoramento de Asma - Responsável"
@@ -61,9 +61,10 @@ def main(page: ft.Page):
 
     # Função que roda em segundo plano checando o backend
     def checar_status():
+        session = requests.Session()
         while True:
             try:
-                resposta = requests.get(f"{URL_BACKEND}/status").json()
+                resposta = session.get(f"{URL_BACKEND}/status").json()
                 if (
                     resposta["status"] == "EMERGÊNCIA"
                     and texto_status.value != "Status: EMERGÊNCIA - BOTÃO ACIONADO!"
@@ -77,7 +78,7 @@ def main(page: ft.Page):
                     page.update()
             except Exception as e:
                 print(f"Erro na thread de checagem do frontend: {e}")
-            time.sleep(1)
+            time.sleep(0.05)
 
     # Inicia a checagem em paralelo
     threading.Thread(target=checar_status, daemon=True).start()

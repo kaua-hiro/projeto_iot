@@ -10,8 +10,8 @@ client = mqtt.Client()
 client.connect(broker, 1883, 60)
 client.loop_start()
 
-print("Apertando o botão de pânico virtual em 3 segundos...")
-time.sleep(3)
+print("Apertando o botão de pânico virtual...")
+time.sleep(0.5)
 
 payload = json.dumps({"alerta": "ON"})
 info = client.publish(topico, payload)
