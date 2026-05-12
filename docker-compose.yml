@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  # Servidor MQTT
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: broker_mqtt
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto_config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+
+  # Banco De Dados IoT
+  timescaledb:
+    image: timescale/timescaledb-ha:pg14-latest
+    container_name: banco_iot_tsdb
+    environment:
+      - POSTGRES_USER=iotuser
+      - POSTGRES_PASSWORD=iotpass
+      - POSTGRES_DB=iotasma
+    ports:
+      - "5433:5432" # <-- Mudamos a porta do host para 5433
